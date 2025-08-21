@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoOnline | Interactive Video Strategy Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthy Professional -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive dashboard. This structure was chosen over a linear document format to allow non-linear exploration, catering to different stakeholders (e.g., an executive might jump straight to the ROI section, while a strategist reviews the competitive analysis). A sticky top navigation facilitates easy movement between key sections: a high-level Dashboard, a deep-dive into the Current State, a Competitive analysis, Audience personas, the core Strategy, and the final Roadmap & ROI. This task-oriented flow enhances usability by breaking the dense report into digestible, interactive modules, making the strategic recommendations more accessible and compelling. -->
+    <!-- Visualization & Content Choices: 
+        - Current State Chart: Report Info (Fragmented YouTube channels) -> Goal (Highlight the opportunity for consolidation) -> Viz (Bar Chart) -> Interaction (None) -> Justification (Clearly shows the existing assets and potential for unified growth) -> Library (Chart.js).
+        - Competitive Matrix: Report Info (Competitor stats/strategies) -> Goal (Compare EcoOnline to rivals) -> Viz (Horizontal Bar Chart + Dynamic Text Area) -> Interaction (Clicking a competitor on the chart updates the text area with their strategy) -> Justification (Interactive comparison is more engaging than a static table and allows for focused reading) -> Library (Chart.js, Vanilla JS).
+        - Personas: Report Info (Audience pain points) -> Goal (Empathize with the audience) -> Viz (Side-by-side cards with icons) -> Interaction (None) -> Justification (Visually separates and clearly defines the two key personas for easy comparison) -> Library (HTML/Tailwind).
+        - Strategy Pillars: Report Info (Three content pillars with detailed examples) -> Goal (Explain the new strategy in detail) -> Viz (Tabbed interface) -> Interaction (Clicking tabs reveals pillar details) -> Justification (Organizes a large amount of text cleanly, preventing cognitive overload) -> Library (HTML/Tailwind, Vanilla JS).
+        - Roadmap & Distribution: Report Info (Dual-platform strategy, promotion playbook) -> Goal (Provide a clear execution plan) -> Viz (Two-column layout with lists) -> Justification (Clearly separates the platform strategy from the promotion tactics for easy comprehension) -> Library (HTML/Tailwind).
+        - ROI Dashboard: Report Info (KPIs and targets) -> Goal (Showcase measurable goals) -> Viz (Stat cards and a summary table) -> Interaction (None) -> Justification (Presents the most important business-impact metrics in a clear, scannable format for executives) -> Library (HTML/Tailwind).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF7;
+            color: #333333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #004D40;
+            border-bottom-color: #004D40;
+        }
+        .tab-btn.active {
+            background-color: #004D40;
+            color: #FFFFFF;
+        }
+        .tab-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-[#004D40]">EcoOnline Video Strategy</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#dashboard" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Dashboard</a>
+                        <a href="#current-state" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">The Opportunity</a>
+                        <a href="#competitors" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Competitors</a>
+                        <a href="#audience" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Audience</a>
+                        <a href="#strategy" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Strategy</a>
+                        <a href="#roadmap" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">Roadmap & ROI</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="dashboard" class="py-16 sm:py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-[#004D40] sm:text-4xl">Vision in Motion: A Strategic Roadmap</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">An interactive overview of the strategic plan to transform EcoOnline's video presence into a powerful engine for brand leadership and demand generation.</p>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-[#FDFBF7] p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-[#004D40]">1. Consolidate & Relaunch</h3>
+                        <p class="mt-2 text-gray-600">Unify existing channels under a single, authoritative "EcoOnline Global" channel to build a cohesive and powerful brand front.</p>
+                    </div>
+                    <div class="bg-[#FDFBF7] p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-[#004D40]">2. Adopt Content Pillars</h3>
+                        <p class="mt-2 text-gray-600">Shift to an audience-centric model with three pillars: Educate & Empower, Demonstrate & Differentiate, and Lead & Inspire.</p>
+                    </div>
+                    <div class="bg-[#FDFBF7] p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-[#004D40]">3. Dual-Platform Distribution</h3>
+                        <p class="mt-2 text-gray-600">Use YouTube for top-of-funnel discovery and a B2B platform (e.g., Wistia) on-site for lead conversion and analytics.</p>
+                    </div>
+                    <div class="bg-[#FDFBF7] p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-[#004D40]">4. Measure for ROI</h3>
+                        <p class="mt-2 text-gray-600">Move beyond vanity metrics to a framework that ties video initiatives directly to business outcomes like leads and pipeline.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="current-state" class="py-16 sm:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-[#004D40] sm:text-4xl">Building on the Foundation: The Opportunity Ahead</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">EcoOnline has established a foundational video presence with key assets in place. This analysis highlights the tremendous opportunity to unify these channels and amplify their impact, turning existing content into a powerful engine for growth.</p>
+                </div>
+                <div class="mt-12">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-center mb-4">Current Channels: A Foundation for Growth</h3>
+                        <p class="text-center text-gray-600 mb-6">EcoOnline's content is currently hosted on two primary channels. By consolidating these, we can focus our strategy, build a stronger subscriber base, and create a unified brand experience that maximizes audience engagement and growth potential.</p>
+                        <div class="chart-container">
+                            <canvas id="currentStateChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="competitors" class="py-16 sm:py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-[#004D40] sm:text-4xl">The Competitive Arena</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">Key competitors are effectively using video to educate their market and build authority. Click on a competitor in the chart to explore their strategy.</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="bg-[#FDFBF7] p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-center mb-4">YouTube Subscriber Comparison</h3>
+                        <div class="chart-container h-96">
+                            <canvas id="competitorChart"></canvas>
+                        </div>
+                    </div>
+                    <div id="competitor-details" class="bg-[#FDFBF7] p-8 rounded-lg shadow-lg min-h-[400px]">
+                        <h3 id="competitor-name" class="text-2xl font-bold text-[#004D40]">Select a Competitor</h3>
+                        <p id="competitor-strategy" class="mt-4 text-gray-700">Details about the selected competitor's video strategy will appear here.</p>
+                        <div id="competitor-takeaway" class="mt-6"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="audience" class="py-16 sm:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-[#004D40] sm:text-4xl">Connecting With Our Audience</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">A successful strategy must address the distinct pain points and content needs of two critical personas: the practitioner and the executive.</p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-[#004D40]">"Samantha, the Safety Manager"</h3>
+                        <p class="text-md font-medium text-gray-500 mt-1">The Hands-On Practitioner</p>
+                        <p class="mt-4 text-gray-600">Overworked and under pressure, Samantha seeks practical, actionable solutions to her immediate problems. She needs content that saves her time and makes her job easier.</p>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-start">
+                                <span class="text-xl mr-3 text-[#A5D6A7]">●</span>
+                                <div><strong class="font-semibold">Pain Point:</strong> Administrative overload and endless paperwork.</div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-xl mr-3 text-[#A5D6A7]">●</span>
+                                <div><strong class="font-semibold">Pain Point:</strong> Difficulty with employee engagement in safety.</div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-xl mr-3 text-[#A5D6A7]">●</span>
+                                <div><strong class="font-semibold">Content Need:</strong> Short, "how-to" videos and practical guides.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-[#004D40]">"David, the Director"</h3>
+                        <p class="text-md font-medium text-gray-500 mt-1">The Executive Budget Holder</p>
+                        <p class="mt-4 text-gray-600">Focused on ROI, risk mitigation, and efficiency, David needs to see the strategic business case. He engages with high-level, authoritative content.</p>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-start">
+                                <span class="text-xl mr-3 text-[#A5D6A7]">●</span>
+                                <div><strong class="font-semibold">Pain Point:</strong> Navigating complex regulatory and compliance risks.</div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-xl mr-3 text-[#A5D6A7]">●</span>
+                                <div><strong class="font-semibold">Pain Point:</strong> Lack of a unified, real-time view of organizational risk.</div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-xl mr-3 text-[#A5D6A7]">●</span>
+                                <div><strong class="font-semibold">Content Need:</strong> Expert interviews, trend analysis, and ROI case studies.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="py-16 sm:py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-[#004D40] sm:text-4xl">The Three-Pillar Content Strategy</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">Our new mission: To become the most trusted educational resource in the EHS & ESG industry. This will be executed through three strategic content pillars.</p>
+                </div>
+                <div class="mt-12 max-w-4xl mx-auto">
+                    <div class="flex flex-col sm:flex-row justify-center border-b border-gray-200">
+                        <button class="tab-btn active px-6 py-3 font-semibold text-gray-600" data-tab="pillar1">Educate & Empower</button>
+                        <button class="tab-btn px-6 py-3 font-semibold text-gray-600" data-tab="pillar2">Demonstrate & Differentiate</button>
+                        <button class="tab-btn px-6 py-3 font-semibold text-gray-600" data-tab="pillar3">Lead & Inspire</button>
+                    </div>
+                    <div class="mt-8">
+                        <div id="pillar1" class="tab-content">
+                            <h3 class="text-2xl font-bold text-[#004D40]">Pillar 1: Educate & Empower (Top of Funnel)</h3>
+                            <p class="mt-4 text-gray-600"><strong>Objective:</strong> Attract a broad audience of EHS professionals by solving their most pressing problems. The goal is to build brand awareness and establish foundational trust by being genuinely helpful.</p>
+                            <p class="mt-4 text-gray-600 font-semibold">Example Video Concepts:</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                                <li>"A 5-Step Guide to Flawless OSHA Recordkeeping"</li>
+                                <li>"3 Ways to Make Your Toolbox Talks More Engaging"</li>
+                                <li>"What is the Corporate Sustainability Reporting Directive (CSRD)? Explained in 5 Minutes"</li>
+                                <li>"Digitizing Your Safety Audits to Save 10 Hours a Week"</li>
+                            </ul>
+                        </div>
+                        <div id="pillar2" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-[#004D40]">Pillar 2: Demonstrate & Differentiate (Middle of Funnel)</h3>
+                            <p class="mt-4 text-gray-600"><strong>Objective:</strong> Nurture the attracted audience by showing how EcoOnline's platform uniquely solves their problems. The focus is on tangible value and outcomes, not just features.</p>
+                             <p class="mt-4 text-gray-600 font-semibold">Example Video Concepts:</p>
+                             <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                                <li>"Customer Spotlight: How Valvoline Centralized Chemical Safety"</li>
+                                <li>"Scenario Demo: From Spreadsheet Chaos to a Streamlined Audit in 3 Minutes"</li>
+                                <li>"EcoOnline vs. Manual Tracking: A Side-by-Side Comparison for Incident Reporting"</li>
+                                <li>"A Deep Dive: Managing Safety Data Sheets (SDS) with Chemical Manager"</li>
+                            </ul>
+                        </div>
+                        <div id="pillar3" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-[#004D40]">Pillar 3: Lead & Inspire (C-Suite Focus)</h3>
+                            <p class="mt-4 text-gray-600"><strong>Objective:</strong> Establish EcoOnline as a high-level thought leader shaping the future of the industry. This content is designed to build brand prestige and engage executive decision-makers.</p>
+                            <p class="mt-4 text-gray-600 font-semibold">Example Video Concepts:</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                                <li>"The ROI of Safety: A C-Suite Roundtable Discussion"</li>
+                                <li>"ESG as a Growth Driver: A Conversation with CEO Tom Goodmanson"</li>
+                                <li>"The 'Situation Room' Series: Tackling the Biggest ESG Challenges with Industry Leaders"</li>
+                                <li>"Navigating the New Climate Disclosure Landscape: An Expert Panel"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16 sm:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-[#004D40] sm:text-4xl">Roadmap & Measuring Success</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600 max-w-3xl mx-auto">An actionable plan for execution and a framework to measure what truly matters: tangible business impact.</p>
+                </div>
+                
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-[#004D40]">The Dual-Platform Strategy</h3>
+                        <p class="mt-4 text-gray-600">We will leverage two distinct video platforms to maximize both brand reach and lead generation, engaging prospects at every stage of their journey.</p>
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-lg text-gray-800">YouTube: The Discovery Engine</h4>
+                            <p class="text-gray-600">The primary goal is to maximize organic reach and build a loyal subscriber base. Success hinges on rigorous SEO, including:</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                                <li>Targeting high-intent keywords EHS managers search for.</li>
+                                <li>Designing compelling, high-contrast thumbnails to maximize clicks.</li>
+                                <li>Optimizing for audience retention by delivering value in the first 15 seconds.</li>
+                            </ul>
+                        </div>
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-lg text-gray-800">Wistia/Vidyard: The Conversion Engine</h4>
+                            <p class="text-gray-600">This platform will host mid-to-bottom-funnel content on the website to convert traffic into qualified leads using tools like:</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-600 space-y-1">
+                                <li>In-video lead capture forms to gate high-value demos.</li>
+                                <li>Seamless CRM integration to pass lead data to the sales team.</li>
+                                <li>Advanced analytics like video heatmaps to provide sales intelligence.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-[#004D40]">Distribution & Promotion Playbook</h3>
+                        <p class="mt-4 text-gray-600">Creating great content is the first step. A proactive, multi-channel distribution strategy is essential to ensure it reaches the right audience and drives action.</p>
+                        <div class="mt-6 space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg text-gray-800">LinkedIn Promotion</h4>
+                                <p class="text-gray-600">As the primary social channel, we will share native video clips to promote C-suite focused content and drive traffic to full videos.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg text-gray-800">Email Marketing</h4>
+                                <p class="text-gray-600">New videos will be promoted to segmented email lists, ensuring practitioners receive tactical "how-to" content and executives receive strategic interviews.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg text-gray-800">Sales Enablement</h4>
+                                <p class="text-gray-600">The sales team will be equipped with a library of customer stories and demos to share in their outreach, with real-time notifications when a prospect watches.</p>
+                            </div>
+                             <div>
+                                <h4 class="font-semibold text-lg text-gray-800">Paid Amplification</h4>
+                                <p class="text-gray-600">A dedicated budget will be used to promote top-performing content via targeted YouTube and LinkedIn ads to reach new, relevant audiences.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16">
+                     <h3 class="text-2xl font-bold text-center text-[#004D40] mb-8">Quarterly Video ROI Dashboard (Targets)</h3>
+                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <div class="text-4xl font-bold text-[#004D40]">500</div>
+                            <div class="mt-2 text-gray-500">Total Watch Time (Hours)</div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <div class="text-4xl font-bold text-[#004D40]">50</div>
+                            <div class="mt-2 text-gray-500">Leads from Video</div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <div class="text-4xl font-bold text-[#004D40]">$250k</div>
+                            <div class="mt-2 text-gray-500">Video-Influenced Pipeline</div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#004D40] text-white">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2024 EcoOnline Video Strategy Proposal. For internal discussion purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const competitorData = {
+                'VelocityEHS': {
+                    strategy: 'VelocityEHS has built its presence on pragmatic, top-of-funnel educational content. Their strategy is to directly answer the specific, high-intent questions their target audience is searching for, such as "What is an SDS?".',
+                    takeaway: '<strong>Takeaway:</strong> Massive production budgets are not a prerequisite for winning on YouTube. A disciplined strategy built on answering fundamental audience questions can generate significant awareness and trust.'
+                },
+                'Cority': {
+                    strategy: 'Cority invests in higher production value to communicate the benefits of its complex software suite. They use high-quality animated explainer videos for their products and excel at building social proof through customer testimonials.',
+                    takeaway: '<strong>Takeaway:</strong> Professional animation is highly effective for simplifying complex solutions. Consistently highlighting customer success is a powerful method for building trust.'
+                },
+                'Workiva': {
+                    strategy: 'Workiva represents peak B2B video maturity, operating like a media entity. They have a diverse content ecosystem including a branded podcast, detailed tutorials, and high-level thought leadership roundtables.',
+                    takeaway: '<strong>Takeaway:</strong> A diverse content portfolio that serves different audience segments with varied formats establishes the brand as an indispensable industry resource.'
+                },
+                'Diligent': {
+                    strategy: 'Diligent targets a senior audience by focusing on the broader Governance, Risk, and Compliance (GRC) landscape. Their content is designed to position them as a high-level strategic partner for the C-suite.',
+                    takeaway: '<strong>Takeaway:</strong> To engage executives, video content must transcend features and address strategic imperatives like governance, risk mitigation, and business impact.'
+                },
+                'EcoOnline': {
+                    strategy: 'EcoOnline has a foundational presence that is poised for significant growth. The current content provides an excellent starting point to build a more audience-centric strategy that will deepen engagement and expand market reach.',
+                    takeaway: '<strong>Opportunity:</strong> A strategic pivot to audience-centric, educational content can fill a major market gap and leapfrog competitors.'
+                }
+            };
+
+            const ctxCurrentState = document.getElementById('currentStateChart').getContext('2d');
+            new Chart(ctxCurrentState, {
+                type: 'bar',
+                data: {
+                    labels: ['EcoOnline Global', 'Engage EHS'],
+                    datasets: [{
+                        label: 'Videos',
+                        data: [17, 65],
+                        backgroundColor: '#A5D6A7',
+                        borderColor: '#A5D6A7',
+                        borderWidth: 1
+                    }, {
+                        label: 'Subscribers',
+                        data: [74, 94],
+                        backgroundColor: '#004D40',
+                        borderColor: '#004D40',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Content Volume vs. Audience Size'
+                        }
+                    }
+                }
+            });
+
+            const competitorLabels = ['Workiva', 'Diligent', 'Cority', 'VelocityEHS', 'EcoOnline'];
+            const competitorSubs = [4400, 3200, 418, 250, 74];
+            
+            const ctxCompetitor = document.getElementById('competitorChart').getContext('2d');
+            const competitorChart = new Chart(ctxCompetitor, {
+                type: 'bar',
+                data: {
+                    labels: competitorLabels,
+                    datasets: [{
+                        label: 'YouTube Subscribers',
+                        data: competitorSubs,
+                        backgroundColor: [
+                            '#88B04B',
+                            '#92A8D1',
+                            '#F7CAC9',
+                            '#F7786B',
+                            '#004D40'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Subscribers'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.raw.toLocaleString()} subscribers`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const competitorName = competitorLabels[index];
+                            updateCompetitorDetails(competitorName);
+                        }
+                    }
+                }
+            });
+
+            function updateCompetitorDetails(name) {
+                const details = competitorData[name];
+                if (details) {
+                    document.getElementById('competitor-name').textContent = name;
+                    document.getElementById('competitor-strategy').textContent = details.strategy;
+                    document.getElementById('competitor-takeaway').innerHTML = details.takeaway;
+                }
+            }
+            updateCompetitorDetails('VelocityEHS');
+
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const target = tab.dataset.tab;
+                    tabContents.forEach(content => {
+                        if (content.id === target) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
